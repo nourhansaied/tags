@@ -4,7 +4,7 @@ import handleError from '../../middleware/handleError.js';
 import AppError from '../../utils/appError.js';
 import userModel from '../../../DB/models/user.model.js';
 
-import bcryot from 'bcrypt-nodejs'
+import bcrypt from 'bcrypt-nodejs'
 
 
 
