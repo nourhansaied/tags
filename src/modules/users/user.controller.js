@@ -16,8 +16,8 @@ console.log(req.body);
     if (foundedUser) {
         next(new AppError("Already register", 409))
     } else {
-       let hashedPassword = bcrypt.hashSync(password, Number(process.env.saltRounds));
-      let addedUser = await userModel.insertMany({ userName,phoneNumber, email, password });
+       let hashedPassword = bcrypt.hashSync(password,bcrypt.genSaltSync(8));
+      let addedUser = await userModel.insertMany({ userName,phoneNumber, email, password:hashedPassword });
         res.json({ message: "hello", addedUser });
     }
 
