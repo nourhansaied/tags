@@ -4,7 +4,7 @@ import handleError from '../../middleware/handleError.js';
 import AppError from '../../utils/appError.js';
 import userModel from '../../../DB/models/user.model.js';
 
-
+import bcryot from 'bcrypt-nodejs'
 
 
 
@@ -16,7 +16,7 @@ console.log(req.body);
     if (foundedUser) {
         next(new AppError("Already register", 409))
     } else {
-    //    let hashedPassword = bcrypt.hashSync(password, Number(process.env.saltRounds));
+       let hashedPassword = bcrypt.hashSync(password, Number(process.env.saltRounds));
       let addedUser = await userModel.insertMany({ userName,phoneNumber, email, password });
         res.json({ message: "hello", addedUser });
     }
@@ -28,8 +28,8 @@ export const signIn = handleError(async (req, res,next) => {
   let {  email, password } = req.body;
   let foundedUser = await userModel.findOne({ email });
   if (foundedUser) {
-        // let matched = bcrypt.compareSync(password, foundedUser.password);
-        let matched = password === foundedUser.password;
+        let matched = bcrypt.compareSync(password, foundedUser.password);
+        // let matched = password === foundedUser.password;
 
         if (matched) {
            let token = jwt.sign({ id: foundedUser._id, userName: foundedUser.userName }, process.env.tokenSecretKey, { expiresIn: 60 * 60 });
