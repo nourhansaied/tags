@@ -6,8 +6,10 @@ import initConnection from "./DB/connection.js";
 import AppError from "./src/utils/appError.js";
 import { globalError } from "./src/utils/globalError.js";
 import userRoutes from "./src/modules/users/user.routes.js";
+import cors from 'cors';
 const app = express();
 const port = 3000;
+app.use(cors())
 app.use(express.json());
 
 initConnection();
@@ -20,4 +22,4 @@ app.use("*", (req, res, next) => {
 
 app.use(globalError)
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(process.env.PORT || port, () => console.log(`Example app listening on port ${port}!`));
