@@ -1,5 +1,4 @@
 
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
 import handleError from '../../middleware/handleError.js';
 import AppError from '../../utils/appError.js';
@@ -29,7 +28,9 @@ export const signIn = handleError(async (req, res,next) => {
   let {  email, password } = req.body;
   let foundedUser = await userModel.findOne({ email });
   if (foundedUser) {
-        let matched = bcrypt.compareSync(password, foundedUser.password);
+        // let matched = bcrypt.compareSync(password, foundedUser.password);
+        let matched = password === foundedUser.password;
+
         if (matched) {
            let token = jwt.sign({ id: foundedUser._id, userName: foundedUser.userName }, process.env.tokenSecretKey, { expiresIn: 60 * 60 });
             res.json({ message: "welcome", token });
